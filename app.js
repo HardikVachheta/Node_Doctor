@@ -1,13 +1,9 @@
+require('dotenv').config();
 const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const app = express()
 const bodyParser = require('body-parser')
-
-
-// const indianCitiesDatabase = require('indian-cities-database');
-// var cities = indianCitiesDatabase.cities;
-
 
 app.use(cors())
 app.use(express.json())
@@ -33,16 +29,24 @@ app.use('/clinic', clinicRouter)
 app.use('/appointment', appointmentRouter)
 
 
-mongoose.connect("mongodb://127.0.0.1:27017/doctor_mg", {}, (err) => {
-    if (err) {
-        console.log("error in db connections....")
-    }
-    else {
-        console.log("db connected....")
-    }
-})
-
-const PORT = 4000
+mongoose.connect(process.env.MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => {
+    console.log("MongoDB connected successfully!");
+}).catch((err) => {
+    console.log("Error connecting to MongoDB:", err);
+});
+// mongoose.connect("mongodb://127.0.0.1:27017/doctor_mg", {}, (err) => {
+//     if (err) {
+//         console.log("error in db connections....")
+//     }
+//     else {
+//         console.log("db connected....")
+//     }
+// })
+   
+const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
 })
