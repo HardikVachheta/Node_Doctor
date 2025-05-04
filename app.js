@@ -7,6 +7,12 @@ const bodyParser = require('body-parser')
 
 app.use(cors())
 app.use(express.json())
+const corsOptions = {
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+};
+app.use(cors(corsOptions));
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.urlencoded({ extended: true }))
@@ -45,7 +51,7 @@ mongoose.connect(process.env.MONGO_URI, {
 //         console.log("db connected....")
 //     }
 // })
-   
+
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`)
